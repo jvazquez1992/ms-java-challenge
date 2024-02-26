@@ -1,0 +1,2 @@
+INSERT INTO account (account_number, account_type, balance, person_id, status) values ('12345', 'AHORROS', 50, 1, 'ENABLED');
+INSERT INTO movement (account_id, movement_description, main_balance, amount, final_balance, date, movement_type) values (1, 'Primer movimiento', 0, 50, 50, '2015-12-17', 'INGRESO');

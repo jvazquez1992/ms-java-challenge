@@ -1,0 +1,1363 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Cuentas V1",
+    "description": "This application management the account and movements information",
+    "contact": {
+      "name": "Jorge A. Vázquez Mendoza",
+      "email": "jorge.vazquez@devsu.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Development"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Cuenta",
+      "description": "Cuenta controller"
+    },
+    {
+      "name": "Movimiento",
+      "description": "Movimiento controller"
+    },
+    {
+      "name": "Reporte",
+      "description": "Reporte controller"
+    }
+  ],
+  "paths": {
+    "/cuenta": {
+      "get": {
+        "tags": [
+          "Cuenta"
+        ],
+        "summary": "Retrieve an account information",
+        "description": "Retrieve an account information by the owner identification or the account number",
+        "operationId": "GetAccount",
+        "parameters": [
+          {
+            "name": "personIdentification",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Identificación de un cliente. Ejemplo: (CIF, Cédula, Pasaporte, RUC)\n<br><br>\n<sup><i>(EN)</i></sup> Identification of a client. Example: (CIF, ID, Passport, RUC)",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "0000000000"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta\n<br><br>\n<sup><i>(EN)</i></sup> Account number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "0000000000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAccountResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Cuenta"
+        ],
+        "summary": "Save a new account in the DB",
+        "description": "Save a new account in the DB",
+        "operationId": "PostAccount",
+        "requestBody": {
+          "description": "Required data to create a new account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cuenta creada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Cuenta"
+        ],
+        "summary": "Update an account information",
+        "description": "Update an existing account information in the DB",
+        "operationId": "PutAccount",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta\n<br><br>\n<sup><i>(EN)</i></sup> Account number",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "0000000000"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required data to create a new account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutAccountRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cuenta actualizada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PutAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cuenta"
+        ],
+        "summary": "Delete an account",
+        "description": "Revome an account from the DB",
+        "operationId": "DeleteAccount",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta\n<br><br>\n<sup><i>(EN)</i></sup> Account number",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "0000000000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cuenta eliminada exitosamente"
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movimiento": {
+      "get": {
+        "tags": [
+          "Movimiento"
+        ],
+        "summary": "Retrieve a movement information",
+        "description": "Retrieve a movement information",
+        "operationId": "GetMovement",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Identificador del movimiento\n<br><br>\n<sup><i>(EN)</i></sup> Movement id",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMovementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Movimiento"
+        ],
+        "summary": "Create a movement",
+        "description": "Create a movement in an account and update the balance",
+        "operationId": "PostMovement",
+        "requestBody": {
+          "description": "Required data to create a new movement",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostMovementRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostMovementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Movimiento"
+        ],
+        "summary": "Update a movement",
+        "description": "Update a movement information",
+        "operationId": "PutMovement",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Identificador del movimiento\n<br><br>\n<sup><i>(EN)</i></sup> Movement id",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required data to create a new account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutMovementRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cuenta actualizada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PutMovementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Movimiento"
+        ],
+        "summary": "Delete a movement",
+        "description": "Revome a movement from the DB",
+        "operationId": "DeleteMovement",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Identificador del movimiento\n<br><br>\n<sup><i>(EN)</i></sup> Movement id",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movimiento eliminado exitosamente"
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reportes": {
+      "get": {
+        "tags": [
+          "Reporte"
+        ],
+        "summary": "Generate an account report",
+        "description": "Generate an account report in a date range by person identification or account",
+        "operationId": "GetReport",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Fecha de inicio del reporte\n<br><br>\n<sup><i>(EN)</i></sup> Report start date",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Fecha de fin del reporte\n<br><br>\n<sup><i>(EN)</i></sup> Report end date",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "personIdentification",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Identificación de un cliente. Ejemplo: (CIF, Cédula, Pasaporte, RUC)\n<br><br>\n<sup><i>(EN)</i></sup> Identification of a client. Example: (CIF, ID, Passport, RUC)",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "0000000000"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta\n<br><br>\n<sup><i>(EN)</i></sup> Account number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "0000000000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetReportResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request. The request information it's not correct.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized.You're not authorized to perform this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Not Found. The server cannot find the requested resource.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Internal Server Error. An error has occurred.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502 Bad Gateway. The service unable to get a valid response.",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GetAccountResponse": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "accountType": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account type."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "personIdentification": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Identificación del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner id."
+          },
+          "personName": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Nombres del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner names."
+          }
+        }
+      },
+      "PostAccountRequest": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "accountType": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account type."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "personIdentification": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Identificación del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner id."
+          }
+        }
+      },
+      "PostAccountResponse": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "accountType": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account type."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "personName": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Nombres del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner names."
+          }
+        }
+      },
+      "PutAccountRequest": {
+        "type": "object",
+        "properties": {
+          "accountType": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account type."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "status": {
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Estado de la cuenta\n<br><br>\n<sup><i>(EN)</i></sup> Account status"
+          }
+        }
+      },
+      "PutAccountResponse": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "accountType": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account type."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "personName": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Nombres del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner names.    "
+          },
+          "status": {
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Estado de la cuenta\n<br><br>\n<sup><i>(EN)</i></sup> Account status            "
+          }
+        }
+      },
+      "GetMovementResponse": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "movementDescription": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Descripción del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement description."
+          },
+          "accountType": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account type."
+          },
+          "amount": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Monto del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement amount"
+          },
+          "movementType": {
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement type."
+          }
+        }
+      },
+      "PostMovementRequest": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "personIdentification": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Identificación del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner id.            "
+          },
+          "movementDescription": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Descripción del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement description.        "
+          },
+          "amount": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Monto del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement amount"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "<sup><i>(ES)</i></sup> Fecha del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement date."
+          }
+        }
+      },
+      "PostMovementResponse": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "movementDescription": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Descripción del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement description.        "
+          },
+          "amount": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Monto del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement amount"
+          },
+          "movementType": {
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement type."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "<sup><i>(ES)</i></sup> Fecha del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement date.            "
+          }
+        }
+      },
+      "PutMovementRequest": {
+        "type": "object",
+        "properties": {
+          "movementDescription": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Descripción del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement description.        "
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "<sup><i>(ES)</i></sup> Fecha del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement date.            "
+          }
+        }
+      },
+      "PutMovementResponse": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "movementDescription": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Descripción del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement description.        "
+          },
+          "amount": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Monto del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement amount"
+          },
+          "movementType": {
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement type."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "<sup><i>(ES)</i></sup> Fecha del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement date.            "
+          }
+        }
+      },
+      "GetReportResponse": {
+        "type": "object",
+        "properties": {
+          "personIdentification": {
+            "maxLength": 30,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Identificación del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner id."
+          },
+          "names": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Nombres del cliente al que pertenece la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account owner names.            "
+          },
+          "accountNumber": {
+            "maxLength": 25,
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Número de cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account number."
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/GetReportDetailsResponse"
+            }
+          }
+        }
+      },
+      "GetReportDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "movementType": {
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Tipo de movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement type."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "<sup><i>(ES)</i></sup> Fecha del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement date."
+          },
+          "amount": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Monto del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement amount"
+          },
+          "balance": {
+            "type": "number",
+            "description": "<sup><i>(ES)</i></sup> Saldo de la cuenta.\n<br><br>\n<sup><i>(EN)</i></sup> Account balance."
+          },
+          "movementDescription": {
+            "type": "string",
+            "description": "<sup><i>(ES)</i></sup> Descripción del movimiento.\n<br><br>\n<sup><i>(EN)</i></sup> Movement description."
+          }
+        }
+      },
+      "Error": {
+        "required": [
+          "developerMessage",
+          "errorCode",
+          "userMessage"
+        ],
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "maxLength": 6,
+            "pattern": "^[a-zA-Z]+$\\d+$",
+            "type": "string",
+            "example": "6"
+          },
+          "developerMessage": {
+            "maxLength": 256,
+            "pattern": "^[a-zA-Z\\s]*$",
+            "type": "string",
+            "example": "Coding Error"
+          },
+          "userMessage": {
+            "maxLength": 256,
+            "pattern": "^[a-zA-Z\\s]*$",
+            "type": "string",
+            "example": "Error al validar dispositvo"
+          },
+          "moreInfo": {
+            "maxLength": 256,
+            "pattern": "^[a-zA-Z\\s]*$",
+            "type": "string",
+            "example": ""
+          },
+          "version": {
+            "maxLength": 256,
+            "pattern": "^[a-zA-Z\\s]*$",
+            "type": "string",
+            "example": "1.0.0"
+          },
+          "status": {
+            "maxLength": 15,
+            "type": "number",
+            "example": 409
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "400 Bad Request. The request information it's not correct.",
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "401 Unauthorized.You're not authorized to perform this operation.",
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "403 Forbidden. You don't have the right permissions to execute this operation.",
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "404 Not Found. The server cannot find the requested resource.",
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "500 Internal Server Error. An error has occurred.",
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "GatewayError": {
+        "description": "502 Bad Gateway. The service unable to get a valid response.",
+        "content": {
+          "application/json;charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
